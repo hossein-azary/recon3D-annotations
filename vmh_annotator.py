@@ -12,7 +12,10 @@ databases and adds them to the model.
 import argparse
 import json
 import logging
+import re
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
@@ -34,7 +37,7 @@ class VMHAnnotator:
     """Annotates metabolic models using the VMH API."""
     
     # VMH API endpoints
-    VMH_API_BASE = "https://delta.vmh.life/api"
+    VMH_API_BASE = "https://www.vmh.life/_api"
     
     # Database mapping for different entity types
     REACTION_DBS = {
@@ -67,15 +70,17 @@ class VMHAnnotator:
         'sbo': 'SBO'
     }
     
-    def __init__(self, cache_responses: bool = True):
+    def __init__(self, cache_responses: bool = True, max_workers: int = 10):
         """
         Initialize the annotator.
         
         Args:
             cache_responses: Whether to cache API responses to avoid redundant calls
+            max_workers: Number of parallel workers for concurrent API requests
         """
         self.cache_responses = cache_responses
         self.response_cache = {}
+        self.cache_lock = threading.Lock()  # Thread-safe cache access
         self.stats = {
             'reactions_annotated': 0,
             'metabolites_annotated': 0,
@@ -83,6 +88,8 @@ class VMHAnnotator:
             'api_calls': 0,
             'api_errors': 0
         }
+        self.stats_lock = threading.Lock()  # Thread-safe stats updates
+        self.max_workers = max_workers
     
     def _get_from_vmh(self, endpoint: str, params: Optional[Dict] = None) -> Optional[Dict]:
         """
@@ -95,26 +102,32 @@ class VMHAnnotator:
         Returns:
             JSON response or None if error
         """
-        # Check cache
+        # Check cache (thread-safe)
         cache_key = f"{endpoint}:{json.dumps(params or {}, sort_keys=True)}"
-        if self.cache_responses and cache_key in self.response_cache:
-            return self.response_cache[cache_key]
+        if self.cache_responses:
+            with self.cache_lock:
+                if cache_key in self.response_cache:
+                    return self.response_cache[cache_key]
         
         try:
             url = f"{self.VMH_API_BASE}{endpoint}"
+
             response = requests.get(url, params=params, timeout=10)
             response.raise_for_status()
             
             data = response.json()
-            self.stats['api_calls'] += 1
+            with self.stats_lock:
+                self.stats['api_calls'] += 1
             
             if self.cache_responses:
-                self.response_cache[cache_key] = data
+                with self.cache_lock:
+                    self.response_cache[cache_key] = data
             
             return data
         except requests.RequestException as e:
             logger.warning(f"VMH API error for {endpoint}: {e}")
-            self.stats['api_errors'] += 1
+            with self.stats_lock:
+                self.stats['api_errors'] += 1
             return None
     
     def annotate_reaction(self, reaction: cobra.Reaction) -> bool:
@@ -137,44 +150,59 @@ class VMHAnnotator:
         existing_ids = reaction.annotation.copy()
         
         # Query VMH for reaction data
-        try:
-            # Try searching by BiGG ID if available
-            if 'bigg.reaction' in existing_ids:
-                bigg_id = existing_ids['bigg.reaction']
-                vmh_data = self._get_from_vmh(f"/reactions/{bigg_id}")
-                if vmh_data and 'data' in vmh_data:
-                    reaction_data = vmh_data['data']
+        # Try searching by BiGG ID if available
+        if 'bigg.reaction' in existing_ids:
+            bigg_id = existing_ids['bigg.reaction']
+            # https://www.vmh.life/_api/reactions/?abbreviation=HEX1
+            try:
+                vmh_data = self._get_from_vmh(f"/reactions/?abbreviation={bigg_id}")
+                if vmh_data is None:
+                    logger.warning(f"Failed to retrieve VMH data for reaction {reaction.id} (BiGG: {bigg_id})")
+                elif 'results' in vmh_data and len(vmh_data['results']) > 0:
+                    reaction_data = vmh_data['results'][0]
+                    
+                    # Map VMH field names to database identifiers
+                    field_mapping = {
+                        'rhea': 'rhea',
+                        'keggId': 'kegg.reaction',
+                        'metanetx': 'metanetx.reaction',
+                        'seed': 'seed.reaction',
+                        'ecnumber': 'ec-code'
+                    }
                     
                     # Add annotations from VMH response
-                    if 'references' in reaction_data:
-                        for ref_type, ref_value in reaction_data['references'].items():
-                            if ref_type in self.REACTION_DBS:
-                                reaction.annotation[self.REACTION_DBS[ref_type]] = ref_value
-                                annotated = True
-            
-            # Add EC code if found in name or comments
-            if 'ec-code' not in reaction.annotation:
-                if 'EC' in reaction.name or 'EC' in reaction.notes:
-                    # Try to extract EC code from name/notes
-                    import re
+                    for vmh_field, db_key in field_mapping.items():
+                        if vmh_field in reaction_data and reaction_data[vmh_field]:
+                            reaction.annotation[db_key] = str(reaction_data[vmh_field])
+                            annotated = True
+            except Exception as e:
+                logger.warning(f"Error processing VMH data for reaction {reaction.id}: {e}")
+        
+        # Add EC code if found in name or comments
+        if 'ec-code' not in reaction.annotation:
+            if 'EC' in reaction.name or 'EC' in reaction.notes:
+                try:
                     ec_pattern = r'\b(\d+\.\d+\.\d+\.(?:\d+|-|n))\b'
                     match = re.search(ec_pattern, reaction.name + ' ' + str(reaction.notes))
                     if match:
                         reaction.annotation['ec-code'] = match.group(1)
                         annotated = True
-            
-            # Add SBO term for reaction classification
-            if 'SBO' not in reaction.annotation:
+                except Exception as e:
+                    logger.debug(f"Error extracting EC code from reaction {reaction.id}: {e}")
+        
+        # Add SBO term for reaction classification
+        if 'SBO' not in reaction.annotation:
+            try:
                 reaction_type = self._classify_reaction(reaction)
                 if reaction_type:
                     reaction.annotation['SBO'] = reaction_type
                     annotated = True
-            
-            if annotated:
-                self.stats['reactions_annotated'] += 1
+            except Exception as e:
+                logger.debug(f"Error classifying reaction {reaction.id}: {e}")
         
-        except Exception as e:
-            logger.debug(f"Error annotating reaction {reaction.id}: {e}")
+        if annotated:
+            with self.stats_lock:
+                self.stats['reactions_annotated'] += 1
         
         return annotated
     
@@ -193,21 +221,33 @@ class VMHAnnotator:
         
         annotated = False
         
-        try:
-            # Query by BiGG ID
-            if 'bigg.metabolite' in metabolite.annotation:
-                bigg_id = metabolite.annotation['bigg.metabolite']
-                vmh_data = self._get_from_vmh(f"/metabolites/{bigg_id}")
+        # Query by BiGG ID
+        if 'bigg.metabolite' in metabolite.annotation:
+            bigg_id = metabolite.annotation['bigg.metabolite']
+            try:
+                vmh_data = self._get_from_vmh(f"/metabolites/?abbreviation={bigg_id}")
                 
-                if vmh_data and 'data' in vmh_data:
-                    met_data = vmh_data['data']
+                if vmh_data is None:
+                    logger.warning(f"Failed to retrieve VMH data for metabolite {metabolite.id} (BiGG: {bigg_id})")
+                elif 'results' in vmh_data and len(vmh_data['results']) > 0:
+                    met_data = vmh_data['results'][0]
+                    
+                    # Map VMH field names to database identifiers
+                    field_mapping = {
+                        'chebiId': 'chebi',
+                        'keggId': 'kegg.compound',
+                        'seed': 'seed.compound',
+                        'metanetx': 'metanetx.chemical',
+                        'inchi': 'inchi',
+                        'inchiKey': 'inchikey',
+                        'smiles': 'smiles'
+                    }
                     
                     # Add cross-references
-                    if 'references' in met_data:
-                        for ref_type, ref_value in met_data['references'].items():
-                            if ref_type in self.METABOLITE_DBS:
-                                metabolite.annotation[self.METABOLITE_DBS[ref_type]] = ref_value
-                                annotated = True
+                    for vmh_field, db_key in field_mapping.items():
+                        if vmh_field in met_data and met_data[vmh_field]:
+                            metabolite.annotation[db_key] = str(met_data[vmh_field])
+                            annotated = True
                     
                     # Add chemical formula if not present
                     if 'formula' not in metabolite.annotation and 'formula' in met_data:
@@ -218,17 +258,20 @@ class VMHAnnotator:
                     if 'charge' not in metabolite.annotation and 'charge' in met_data:
                         metabolite.annotation['charge'] = str(met_data['charge'])
                         annotated = True
-            
-            # Add SBO term
-            if 'SBO' not in metabolite.annotation:
+            except Exception as e:
+                logger.warning(f"Error processing VMH data for metabolite {metabolite.id}: {e}")
+        
+        # Add SBO term
+        if 'SBO' not in metabolite.annotation:
+            try:
                 metabolite.annotation['SBO'] = 'SBO:0000247'  # Simple chemical
                 annotated = True
-            
-            if annotated:
-                self.stats['metabolites_annotated'] += 1
+            except Exception as e:
+                logger.debug(f"Error adding SBO term to metabolite {metabolite.id}: {e}")
         
-        except Exception as e:
-            logger.debug(f"Error annotating metabolite {metabolite.id}: {e}")
+        if annotated:
+            with self.stats_lock:
+                self.stats['metabolites_annotated'] += 1
         
         return annotated
     
@@ -247,27 +290,54 @@ class VMHAnnotator:
         
         annotated = False
         
-        try:
-            # Extract gene ID and look for NCBI/UniProt IDs
-            gene_id = gene.id
-            
-            # Check for existing NCBI ID
-            if 'ncbi.geneid' not in gene.annotation and gene_id:
+        # Extract gene ID and look for NCBI/UniProt IDs
+        gene_id = gene.id
+        
+        # Query VMH for gene data
+        if gene_id:
+            try:
+                vmh_data = self._get_from_vmh(f"/genes/?abbreviation={gene_id}")
+                
+                if vmh_data is None:
+                    logger.debug(f"No VMH data found for gene {gene_id}")
+                elif 'results' in vmh_data and len(vmh_data['results']) > 0:
+                    gene_data = vmh_data['results'][0]
+                    
+                    # Map VMH field names to database identifiers
+                    field_mapping = {
+                        'uniprotId': 'uniprot',
+                        'ensemblId': 'ensembl',
+                        'ncbiId': 'ncbi.geneid'
+                    }
+                    
+                    # Add cross-references
+                    for vmh_field, db_key in field_mapping.items():
+                        if vmh_field in gene_data and gene_data[vmh_field]:
+                            gene.annotation[db_key] = str(gene_data[vmh_field])
+                            annotated = True
+            except Exception as e:
+                logger.warning(f"Error processing VMH data for gene {gene_id}: {e}")
+        
+        # Check for existing NCBI ID
+        if 'ncbi.geneid' not in gene.annotation and gene_id:
+            try:
                 # Try to use gene ID directly if it looks like a gene identifier
                 if gene_id.startswith('G_') or any(c.isdigit() for c in gene_id):
                     gene.annotation['ncbi.geneid'] = gene_id
                     annotated = True
-            
-            # Add SBO term for gene
-            if 'SBO' not in gene.annotation:
+            except Exception as e:
+                logger.debug(f"Error processing gene ID for gene {gene_id}: {e}")
+        
+        # Add SBO term for gene
+        if 'SBO' not in gene.annotation:
+            try:
                 gene.annotation['SBO'] = 'SBO:0000243'  # Protein
                 annotated = True
-            
-            if annotated:
-                self.stats['genes_annotated'] += 1
+            except Exception as e:
+                logger.debug(f"Error adding SBO term to gene {gene_id}: {e}")
         
-        except Exception as e:
-            logger.debug(f"Error annotating gene {gene.id}: {e}")
+        if annotated:
+            self.stats['genes_annotated'] += 1
         
         return annotated
     
@@ -301,7 +371,7 @@ class VMHAnnotator:
     
     def annotate_model(self, model: cobra.Model) -> Dict:
         """
-        Annotate all reactions, metabolites, and genes in a model.
+        Annotate all reactions, metabolites, and genes in a model using parallel processing.
         
         Args:
             model: COBRApy model object
@@ -313,24 +383,57 @@ class VMHAnnotator:
         logger.info(f"  Reactions: {len(model.reactions)}")
         logger.info(f"  Metabolites: {len(model.metabolites)}")
         logger.info(f"  Genes: {len(model.genes)}")
+        logger.info(f"  Using {self.max_workers} parallel workers")
         
-        # Annotate reactions
+        # Annotate reactions in parallel
         logger.info("Annotating reactions...")
-        for reaction in tqdm(model.reactions, desc="Reactions"):
-            self.annotate_reaction(reaction)
+        self._annotate_entities_parallel(
+            model.reactions, 
+            self.annotate_reaction,
+            desc="Reactions"
+        )
         
-        # Annotate metabolites
+        # Annotate metabolites in parallel
         logger.info("Annotating metabolites...")
-        for metabolite in tqdm(model.metabolites, desc="Metabolites"):
-            self.annotate_metabolite(metabolite)
+        self._annotate_entities_parallel(
+            model.metabolites, 
+            self.annotate_metabolite,
+            desc="Metabolites"
+        )
         
-        # Annotate genes
+        # Annotate genes in parallel
         logger.info("Annotating genes...")
-        for gene in tqdm(model.genes, desc="Genes"):
-            self.annotate_gene(gene)
+        self._annotate_entities_parallel(
+            model.genes, 
+            self.annotate_gene,
+            desc="Genes"
+        )
         
         logger.info("Annotation complete!")
         return self.stats
+    
+    def _annotate_entities_parallel(self, entities, annotate_func, desc: str):
+        """
+        Annotate entities in parallel using ThreadPoolExecutor.
+        
+        Args:
+            entities: List of entities to annotate
+            annotate_func: Function to call for each entity
+            desc: Description for progress bar
+        """
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            # Submit all tasks
+            futures = {executor.submit(annotate_func, entity): entity for entity in entities}
+            
+            # Process completed tasks with progress bar
+            with tqdm(total=len(entities), desc=desc) as pbar:
+                for future in as_completed(futures):
+                    try:
+                        future.result()
+                    except Exception as e:
+                        entity = futures[future]
+                        logger.warning(f"Error annotating {entity.id}: {e}")
+                    pbar.update(1)
     
     def get_stats(self) -> Dict:
         """Get annotation statistics."""
