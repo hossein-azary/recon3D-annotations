@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Model Annotation Comparison Report</title>
+    <style>
+        :root {
+            --bg: #f6f7f9;
+            --panel: #ffffff;
+            --text: #17202a;
+            --muted: #5c6b7a;
+            --line: #d9e0e7;
+            --header: #263746;
+            --accent: #1f7a8c;
+            --accent-soft: #e8f4f6;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.45;
+        }
+        header {
+            background: var(--header);
+            color: white;
+            padding: 28px 36px;
+        }
+        header h1 { margin: 0 0 8px; font-size: 28px; }
+        header p { margin: 4px 0; color: #d8e0e8; }
+        main { padding: 24px 36px 40px; }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .summary-grid.compact {
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        }
+        .card, .panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 18px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .panel { margin: 0 0 22px; }
+        h2 { margin: 0 0 14px; font-size: 22px; }
+        h3 { margin: 18px 0 10px; font-size: 17px; }
+        .metric, .summary-grid.compact div {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 0;
+            border-top: 1px solid var(--line);
+        }
+        .metric:first-of-type { border-top: 0; }
+        .metric span, .summary-grid.compact span { color: var(--muted); }
+        .metric strong, .summary-grid.compact strong { color: var(--header); }
+        .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th {
+            position: sticky;
+            top: 0;
+            background: var(--header);
+            color: white;
+            text-align: left;
+            padding: 9px 10px;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+        td {
+            padding: 8px 10px;
+            border-top: 1px solid var(--line);
+            vertical-align: top;
+            font-size: 13px;
+        }
+        tr:nth-child(even) td { background: #fafbfc; }
+        .note {
+            background: var(--accent-soft);
+            border-left: 4px solid var(--accent);
+            padding: 12px 14px;
+            margin: 0 0 22px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Model Annotation Comparison Report</h1>
+        <p>Generated: 2026-06-30 16:54:22</p>
+        <p>Main model: recon3D-annotations\Recon3D.json</p>
+        <p>Annotated model: recon3D-annotations\recon3D_annotated8.json</p>
+    </header>
+    <main>
+        <div class="note">
+            This report compares the original model with the annotated model. It counts annotation keys and individual annotation values, including list values.
+        </div>
+        <section class="summary-grid">
+            
+            <section class="card">
+                <h3>Reactions</h3>
+                <div class="metric"><span>Entities</span><strong>10600 to 10600</strong></div>
+                <div class="metric"><span>Changed entities</span><strong>10600 (100.0%)</strong></div>
+                <div class="metric"><span>Annotation keys</span><strong>10 to 10</strong></div>
+                <div class="metric"><span>Annotation values</span><strong>51425 to 53790</strong></div>
+            </section>
+            
+
+            <section class="card">
+                <h3>Metabolites</h3>
+                <div class="metric"><span>Entities</span><strong>5835 to 5835</strong></div>
+                <div class="metric"><span>Changed entities</span><strong>5835 (100.0%)</strong></div>
+                <div class="metric"><span>Annotation keys</span><strong>16 to 19</strong></div>
+                <div class="metric"><span>Annotation values</span><strong>46661 to 66844</strong></div>
+            </section>
+            
+
+            <section class="card">
+                <h3>Genes</h3>
+                <div class="metric"><span>Entities</span><strong>2248 to 2248</strong></div>
+                <div class="metric"><span>Changed entities</span><strong>2248 (100.0%)</strong></div>
+                <div class="metric"><span>Annotation keys</span><strong>8 to 11</strong></div>
+                <div class="metric"><span>Annotation values</span><strong>22704 to 29151</strong></div>
+            </section>
+            
+        </section>
+        
+        <section class="panel">
+            <h2>Format Quality Checks</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Check</th><th>Matches</th><th>Status</th></tr></thead>
+                    <tbody><tr><td>ec-code values with &quot;EC:&quot;</td><td>0</td><td>OK</td></tr>
+<tr><td>sbo values with &quot;SBO:&quot;</td><td>0</td><td>OK</td></tr>
+<tr><td>inchi values with &quot;InChI=&quot;</td><td>0</td><td>OK</td></tr>
+<tr><td>legacy &quot;inchi_key&quot; keys</td><td>0</td><td>OK</td></tr>
+<tr><td>uppercase &quot;SBO&quot; keys</td><td>18683</td><td>Needs cleanup</td></tr>
+<tr><td>uppercase &quot;EC&quot; keys</td><td>0</td><td>OK</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+        
+        
+            <section class="panel">
+                <h2>Reactions</h2>
+                <div class="summary-grid compact">
+                    <div><span>Changed</span><strong>10600</strong></div>
+                    <div><span>Unchanged</span><strong>0</strong></div>
+                    <div><span>More annotations</span><strong>1533</strong></div>
+                    <div><span>Fewer annotations</span><strong>0</strong></div>
+                    <div><span>Entities added</span><strong>0</strong></div>
+                    <div><span>Entities removed</span><strong>0</strong></div>
+                </div>
+
+                <h3>Annotation Parameters</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Main entities</th>
+                                <th>Annotated entities</th>
+                                <th>Entity delta</th>
+                                <th>Main values</th>
+                                <th>Annotated values</th>
+                                <th>Value delta</th>
+                                <th>New key on entities</th>
+                                <th>Value changed on entities</th>
+                                <th>Key removed on entities</th>
+                            </tr>
+                        </thead>
+                        <tbody><tr><td>sbo</td><td>10600</td><td>10600</td><td>+0</td><td>10600</td><td>10600</td><td>+0</td><td>0</td><td>10600</td><td>0</td></tr>
+<tr><td>ec-code</td><td>1224</td><td>2465</td><td>+1241</td><td>1799</td><td>3441</td><td>+1642</td><td>1241</td><td>29</td><td>0</td></tr>
+<tr><td>kegg.reaction</td><td>896</td><td>1164</td><td>+268</td><td>910</td><td>1182</td><td>+272</td><td>268</td><td>4</td><td>0</td></tr>
+<tr><td>rhea</td><td>1072</td><td>1255</td><td>+183</td><td>4340</td><td>4524</td><td>+184</td><td>183</td><td>1</td><td>0</td></tr>
+<tr><td>metanetx.reaction</td><td>5478</td><td>5486</td><td>+8</td><td>5478</td><td>5659</td><td>+181</td><td>8</td><td>173</td><td>0</td></tr>
+<tr><td>seed.reaction</td><td>1552</td><td>1623</td><td>+71</td><td>2289</td><td>2365</td><td>+76</td><td>71</td><td>5</td><td>0</td></tr>
+<tr><td>bigg.reaction</td><td>10600</td><td>10600</td><td>+0</td><td>10600</td><td>10610</td><td>+10</td><td>0</td><td>10</td><td>0</td></tr>
+<tr><td>biocyc</td><td>1035</td><td>1035</td><td>+0</td><td>1115</td><td>1115</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>reactome.reaction</td><td>633</td><td>633</td><td>+0</td><td>13378</td><td>13378</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>sabiork</td><td>865</td><td>865</td><td>+0</td><td>916</td><td>916</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr></tbody>
+                    </table>
+                </div>
+
+                <h3>Changed Entity Examples</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Value count</th>
+                                <th>New parameters</th>
+                                <th>Changed parameters</th>
+                                <th>Removed parameters</th>
+                            </tr>
+                        </thead>
+                        <tbody><tr><td>10FTHF5GLUtl</td><td>5-glutamyl-10FTHF transport, lysosomal</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>10FTHF5GLUtm</td><td>5-glutamyl-10FTHF transport, mitochondrial</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>10FTHF6GLUtl</td><td>6-glutamyl-10FTHF transport, lysosomal</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>10FTHF6GLUtm</td><td>6-glutamyl-10FTHF transport, mitochondrial</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>10FTHF7GLUtl</td><td>7-glutamyl-10FTHF transport, lysosomal</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>10FTHF7GLUtm</td><td>7-glutamyl-10FTHF transport, mitochondrial</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>10FTHFtl</td><td>10-Formyltetrahydrofolate lysosomal transport via diffusion</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>10FTHFtm</td><td>10-Formyltetrahydrofolate mitochondrial transport via diffusion</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>11DOCRTSLte</td><td>Transport of 11-Deoxycortisol, Extracellular</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>11DOCRTSLtm</td><td>11-deoxycortisol intracellular transport</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>11DOCRTSLtr</td><td>11-deoxycortisol intracellular transport</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>11DOCRTSTRNte</td><td>Transport of 11-Deoxycorticosterone, Extracellular</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>11DOCRTSTRNtm</td><td>11-deoxycorticosterone intracellular transport</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>11DOCRTSTRNtr</td><td>11-deoxycorticosterone intracellular transport</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12DHCHOLabc</td><td>12-Dehydrocholic acid ABC bile acid transporter</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12DHCHOLt</td><td>12-Dehydrocholic acid transport via bicarbonate countertransport</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12DHCHOLt2</td><td>12-Dehydrocholic acid transport via sodium cotransport</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HARACHDte</td><td>Transport of 12 Hydroxy Arachidonic Acid, Extracellular Space, Active Transport</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HARACHDtr</td><td>Transport of 12 Hydroxy Arachidonic Acid, Endoplasmatic Reticulum, Active Transport</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HPETATP</td><td>Transport of 12-Hydroperoxyeicosa-5, 8, 10, 14-Tetraenoate, by FATP</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HPETUPKt</td><td>Transport of 12-Hydroperoxyeicosa-5, 8, 10, 14-Tetraenoate, by Diffusion</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HTACRhr</td><td>Oxidation of tacrolimus in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HTACRitr</td><td>12HTACRitr</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HTACRtep</td><td>Exit of 12-hydroxy tacrolimus into portal blood</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HTACRtu</td><td>Efflux of 12-hydroxy tacrolimus into intestinal lumen by ABC transporter</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>12PPDRte</td><td>Assumed Passive Diffusion into Extracellular Space</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1331TAALThr</td><td>Demethylation of 13-O-desmethyl-tacrolimus to 13,31-O-Didesmethyl-tacrolimus in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1331TACRhr</td><td>Demethylation of 31-O-desmethyl-tacrolimus to 13,31-O-Didesmethyl-tacrolimus in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1331TACRteb</td><td>Efflux of 13,31-O-Didesmethyl-tacrolimus into bile</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1331TACRtev</td><td>Exit of 13,31-O-Didesmethyl-tacrolimus into hepatic vein</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>13DAMPPOX</td><td>1,3-Diaminopropane:oxygen oxidoreductase (deaminating)</td><td>3 to 4</td><td>seed.reaction</td><td>sbo</td><td>-</td></tr>
+<tr><td>13DAMPPte</td><td>Facilitated Diffusion Through Uniport Octs Transporters into Extracellular Space</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>13DMThr</td><td>Demthylation of tacrolimus to 13-O-desmethyl tacrolimus in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>13DMTitr</td><td>13DMTitr</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>13DMTtep</td><td>Exit of 13-O-desmethyl tacrolimus into portal blood</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>13DMTtu</td><td>Efflux of 13-O-desmethyl tacrolimus into intestinal lumen by ABC transporter</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>13HTACRitr</td><td>13HTACRitr</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>13_CIS_RETNte</td><td>Transport of 13-Cis-Retinoate</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>14HMDZALThr</td><td>Oxidation of 4-OH-midazolam to 1,4-Dihydroxy-midazolam in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>14HMDZhr</td><td>Oxidation of 1-OH-midazolam to 1,4-Dihydroxy-midazolam in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>14HMDZitr</td><td>14HMDZitr</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>14MDZtev</td><td>Efflux of 1,4-Dihydroxy-midazolam into hepatic vein</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1513DTACRhr</td><td>Demthylation of 13-O-desmethyl tacrolimus to 13,15-O-didesmethyl tacrolimus in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1513DTALThr</td><td>Demthylation of 15-O-desmethyl tacrolimus to 13,15-O-didesmethyl tacrolimus in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1513TACRitr</td><td>1513TACRitr</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1513TACRtep</td><td>Exit of 13,15-O-didesmethyl tacrolimus into portal blood</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1513TACRtu</td><td>Efflux of 13,15-O-didesmethyl tacrolimus into intestinal lumen by ABC transporter</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1531TACRhr</td><td>Demethylation of 15-O-desmethyl tacrolimus to 15, 31-O-Didesmethyl-tacrolimus in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1531TACRitr</td><td>1531TACRitr</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1531TACRteb</td><td>Efflux of 15, 31-O-Didesmethyl-tacrolimus into bile</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1531TACRtev</td><td>Exit of 15, 31-O-Didesmethyl-tacrolimus into hepatic vein</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>1531TALThr</td><td>Demethylation of 31-O-desmethyl tacrolimus to 15, 31-O-Didesmethyl-tacrolimus in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>15DMThr</td><td>Demethylation of tacrolimus to 15-O-desmethyl tacrolimus in hepatocytes</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>15DMTitr</td><td>15DMTitr</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>15DMTtep</td><td>Exit of 15-O-desmethyl tacrolimus into portal blood</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>15DMTtu</td><td>Efflux of 15-O-desmethyl tacrolimus into intestinal lumen by ABC transporter</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>15HPETATP</td><td>Transport of 15(S)-HPETE, Active Transport</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>15HPETUPKt</td><td>Transport of 15(S)-HPETE, Diffusion</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>15KPROSTGF2c</td><td>Formation of 15-Keto-Prostaglandin F2A</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>15KPROSTGF2t</td><td>Transport of 15-Keto-Prostaglandin F2A, Lactate Antiport</td><td>2 to 2</td><td>-</td><td>sbo</td><td>-</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <section class="panel">
+                <h2>Metabolites</h2>
+                <div class="summary-grid compact">
+                    <div><span>Changed</span><strong>5835</strong></div>
+                    <div><span>Unchanged</span><strong>0</strong></div>
+                    <div><span>More annotations</span><strong>5583</strong></div>
+                    <div><span>Fewer annotations</span><strong>0</strong></div>
+                    <div><span>Entities added</span><strong>0</strong></div>
+                    <div><span>Entities removed</span><strong>0</strong></div>
+                </div>
+
+                <h3>Annotation Parameters</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Main entities</th>
+                                <th>Annotated entities</th>
+                                <th>Entity delta</th>
+                                <th>Main values</th>
+                                <th>Annotated values</th>
+                                <th>Value delta</th>
+                                <th>New key on entities</th>
+                                <th>Value changed on entities</th>
+                                <th>Key removed on entities</th>
+                            </tr>
+                        </thead>
+                        <tbody><tr><td>chebi</td><td>1920</td><td>2887</td><td>+967</td><td>12902</td><td>14024</td><td>+1122</td><td>967</td><td>1920</td><td>0</td></tr>
+<tr><td>sbo</td><td>5835</td><td>5835</td><td>+0</td><td>5835</td><td>5835</td><td>+0</td><td>0</td><td>5835</td><td>0</td></tr>
+<tr><td>charge</td><td>0</td><td>5583</td><td>+5583</td><td>0</td><td>5583</td><td>+5583</td><td>5583</td><td>0</td><td>0</td></tr>
+<tr><td>inchikey</td><td>0</td><td>4583</td><td>+4583</td><td>0</td><td>4963</td><td>+4963</td><td>4583</td><td>0</td><td>0</td></tr>
+<tr><td>smiles</td><td>0</td><td>4576</td><td>+4576</td><td>0</td><td>4576</td><td>+4576</td><td>4576</td><td>0</td><td>0</td></tr>
+<tr><td>inchi</td><td>0</td><td>4317</td><td>+4317</td><td>0</td><td>4317</td><td>+4317</td><td>4317</td><td>0</td><td>0</td></tr>
+<tr><td>inchi_key</td><td>1879</td><td>0</td><td>-1879</td><td>1879</td><td>0</td><td>-1879</td><td>0</td><td>0</td><td>1879</td></tr>
+<tr><td>kegg.compound</td><td>1767</td><td>2824</td><td>+1057</td><td>1963</td><td>3064</td><td>+1101</td><td>1057</td><td>44</td><td>0</td></tr>
+<tr><td>seed.compound</td><td>1834</td><td>2117</td><td>+283</td><td>2235</td><td>2552</td><td>+317</td><td>283</td><td>34</td><td>0</td></tr>
+<tr><td>metanetx.chemical</td><td>3703</td><td>3706</td><td>+3</td><td>3703</td><td>3786</td><td>+83</td><td>3</td><td>80</td><td>0</td></tr>
+<tr><td>bigg.metabolite</td><td>5835</td><td>5835</td><td>+0</td><td>5835</td><td>5835</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>biocyc</td><td>1721</td><td>1721</td><td>+0</td><td>1981</td><td>1981</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>envipath</td><td>390</td><td>390</td><td>+0</td><td>723</td><td>723</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>hmdb</td><td>1847</td><td>1847</td><td>+0</td><td>2673</td><td>2673</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>kegg.drug</td><td>415</td><td>415</td><td>+0</td><td>467</td><td>467</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>kegg.glycan</td><td>91</td><td>91</td><td>+0</td><td>95</td><td>95</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>lipidmaps</td><td>628</td><td>628</td><td>+0</td><td>811</td><td>811</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>reactome.compound</td><td>1275</td><td>1275</td><td>+0</td><td>3474</td><td>3474</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>sabiork</td><td>1557</td><td>1557</td><td>+0</td><td>1803</td><td>1803</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>slm</td><td>268</td><td>268</td><td>+0</td><td>282</td><td>282</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr></tbody>
+                    </table>
+                </div>
+
+                <h3>Changed Entity Examples</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Value count</th>
+                                <th>New parameters</th>
+                                <th>Changed parameters</th>
+                                <th>Removed parameters</th>
+                            </tr>
+                        </thead>
+                        <tbody><tr><td>10fthf5glu_c</td><td>10-formyltetrahydrofolate-[Glu](5)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf5glu_e</td><td>10-formyltetrahydrofolate-[Glu](5)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf5glu_l</td><td>10-formyltetrahydrofolate-[Glu](5)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf5glu_m</td><td>10-formyltetrahydrofolate-[Glu](5)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf6glu_c</td><td>10-formyltetrahydrofolate-[Glu](6)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf6glu_e</td><td>10-formyltetrahydrofolate-[Glu](6)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf6glu_l</td><td>10-formyltetrahydrofolate-[Glu](6)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf6glu_m</td><td>10-formyltetrahydrofolate-[Glu](6)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf7glu_c</td><td>10-formyltetrahydrofolate-[Glu](7)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf7glu_e</td><td>10-formyltetrahydrofolate-[Glu](7)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf7glu_l</td><td>10-formyltetrahydrofolate-[Glu](7)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf7glu_m</td><td>10-formyltetrahydrofolate-[Glu](7)</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>10fthf_c</td><td>10-Formyltetrahydrofolate</td><td>17 to 21</td><td>charge, inchi, inchikey, smiles</td><td>chebi, sbo</td><td>inchi_key</td></tr>
+<tr><td>10fthf_e</td><td>10-Formyltetrahydrofolate</td><td>17 to 21</td><td>charge, inchi, inchikey, smiles</td><td>chebi, sbo</td><td>inchi_key</td></tr>
+<tr><td>10fthf_l</td><td>10-Formyltetrahydrofolate</td><td>17 to 21</td><td>charge, inchi, inchikey, smiles</td><td>chebi, sbo</td><td>inchi_key</td></tr>
+<tr><td>10fthf_m</td><td>10-Formyltetrahydrofolate</td><td>17 to 21</td><td>charge, inchi, inchikey, smiles</td><td>chebi, sbo</td><td>inchi_key</td></tr>
+<tr><td>11_cis_retfa_c</td><td>Fatty acid 11-cis-retinol</td><td>3 to 4</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>11_cis_retfa_e</td><td>Fatty acid 11-cis-retinol</td><td>3 to 4</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>11docrtsl_c</td><td>11docrtsl c</td><td>3 to 9</td><td>charge, inchi, inchikey, kegg.compound, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>11docrtsl_e</td><td>11docrtsl c</td><td>3 to 9</td><td>charge, inchi, inchikey, kegg.compound, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>11docrtsl_m</td><td>11docrtsl c</td><td>3 to 9</td><td>charge, inchi, inchikey, kegg.compound, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>11docrtsl_r</td><td>11docrtsl c</td><td>3 to 9</td><td>charge, inchi, inchikey, kegg.compound, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>11docrtstrn_c</td><td>11-Deoxycorticosterone</td><td>3 to 10</td><td>charge, chebi, inchi, inchikey, kegg.compound, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>11docrtstrn_e</td><td>11-Deoxycorticosterone</td><td>3 to 10</td><td>charge, chebi, inchi, inchikey, kegg.compound, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>11docrtstrn_m</td><td>11-Deoxycorticosterone</td><td>3 to 10</td><td>charge, chebi, inchi, inchikey, kegg.compound, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>11docrtstrn_r</td><td>11-Deoxycorticosterone</td><td>3 to 10</td><td>charge, chebi, inchi, inchikey, kegg.compound, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HPET_c</td><td>12-Hydroperoxyeicosa-5,8,10,14-tetraenoate</td><td>3 to 9</td><td>charge, chebi, inchi, inchikey, kegg.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HPET_e</td><td>12-Hydroperoxyeicosa-5,8,10,14-tetraenoate</td><td>3 to 9</td><td>charge, chebi, inchi, inchikey, kegg.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>12HPET_r</td><td>12-Hydroperoxyeicosa-5,8,10,14-tetraenoate</td><td>3 to 9</td><td>charge, chebi, inchi, inchikey, kegg.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>12dgr120_e</td><td>1,2-Diacyl-sn-glycerol (didodecanoyl, n-C12:0)</td><td>3 to 8</td><td>charge, inchi, inchikey, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>12dhchol_c</td><td>12-Dehydrocholic acid; 12-Oxodeoxycholic acid; 12oxo-3alpha,7alpha-Dihydroxy-5beta-cholan-24-oic acid</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>12dhchol_e</td><td>12-Dehydrocholic acid; 12-Oxodeoxycholic acid; 12oxo-3alpha,7alpha-Dihydroxy-5beta-cholan-24-oic acid</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>12harachd_c</td><td>12 hydroxy arachidonic acid</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>12harachd_e</td><td>12 hydroxy arachidonic acid</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>12harachd_r</td><td>12 hydroxy arachidonic acid</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>12htacr_c</td><td>12-HT or M-VI, 12-hydroxy tacrolimus</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>12htacr_e</td><td>12-HT or M-VI, 12-hydroxy tacrolimus</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>12htacr_r</td><td>12-HT or M-VI, 12-hydroxy tacrolimus</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>12ppd__R_c</td><td>(R)-Propane-1,2-diol</td><td>11 to 11</td><td>inchikey</td><td>chebi, sbo</td><td>inchi_key</td></tr>
+<tr><td>12ppd__R_e</td><td>(R)-Propane-1,2-diol</td><td>11 to 11</td><td>inchikey</td><td>chebi, sbo</td><td>inchi_key</td></tr>
+<tr><td>12ppd__S_c</td><td>(S)-Propane-1,2-diol</td><td>12 to 12</td><td>inchikey</td><td>chebi, sbo</td><td>inchi_key</td></tr>
+<tr><td>1331tacr_c</td><td>13,31-O-Didesmethyl-tacrolimus</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>1331tacr_e</td><td>13,31-O-Didesmethyl-tacrolimus</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>1331tacr_r</td><td>13,31-O-Didesmethyl-tacrolimus</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>13_cis_oretn_c</td><td>13-cis-oxo-retinoic acid</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13_cis_oretn_n</td><td>13-cis-oxo-retinoic acid</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13_cis_retn_c</td><td>13-cis-retinoate</td><td>3 to 9</td><td>charge, chebi, inchi, inchikey, kegg.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13_cis_retn_e</td><td>13-cis-retinoate</td><td>3 to 9</td><td>charge, chebi, inchi, inchikey, kegg.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13_cis_retn_n</td><td>13-cis-retinoate</td><td>3 to 9</td><td>charge, chebi, inchi, inchikey, kegg.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13_cis_retn_r</td><td>13-cis-retinoate</td><td>3 to 9</td><td>charge, chebi, inchi, inchikey, kegg.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13_cis_retnglc_c</td><td>13-cis-retinoyl glucuronide</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13_cis_retnglc_e</td><td>13-cis-retinoyl glucuronide</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13_cis_retnglc_r</td><td>13-cis-retinoyl glucuronide</td><td>3 to 7</td><td>charge, inchi, inchikey, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13dampp_c</td><td>1 3 Diaminopropane C3H12N2</td><td>3 to 10</td><td>charge, chebi, inchi, inchikey, kegg.compound, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13dampp_e</td><td>1 3 Diaminopropane C3H12N2</td><td>3 to 10</td><td>charge, chebi, inchi, inchikey, kegg.compound, seed.compound, smiles</td><td>sbo</td><td>-</td></tr>
+<tr><td>13dmt_c</td><td>13-O-desmethyl tacrolimus, 13-DMT or M-I</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>13dmt_e</td><td>13-O-desmethyl tacrolimus, 13-DMT or M-I</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>13dmt_r</td><td>13-O-desmethyl tacrolimus, 13-DMT or M-I</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr>
+<tr><td>13dpg_c</td><td>3-Phospho-D-glyceroyl phosphate</td><td>15 to 18</td><td>charge, inchi, inchikey, smiles</td><td>chebi, sbo</td><td>inchi_key</td></tr>
+<tr><td>14hmdz_c</td><td>1,4-Dihydroxy-midazolam</td><td>2 to 3</td><td>charge</td><td>sbo</td><td>-</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <section class="panel">
+                <h2>Genes</h2>
+                <div class="summary-grid compact">
+                    <div><span>Changed</span><strong>2248</strong></div>
+                    <div><span>Unchanged</span><strong>0</strong></div>
+                    <div><span>More annotations</span><strong>2206</strong></div>
+                    <div><span>Fewer annotations</span><strong>0</strong></div>
+                    <div><span>Entities added</span><strong>0</strong></div>
+                    <div><span>Entities removed</span><strong>0</strong></div>
+                </div>
+
+                <h3>Annotation Parameters</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Main entities</th>
+                                <th>Annotated entities</th>
+                                <th>Entity delta</th>
+                                <th>Main values</th>
+                                <th>Annotated values</th>
+                                <th>Value delta</th>
+                                <th>New key on entities</th>
+                                <th>Value changed on entities</th>
+                                <th>Key removed on entities</th>
+                            </tr>
+                        </thead>
+                        <tbody><tr><td>sbo</td><td>2248</td><td>2248</td><td>+0</td><td>2248</td><td>2248</td><td>+0</td><td>0</td><td>2248</td><td>0</td></tr>
+<tr><td>ensembl</td><td>0</td><td>2206</td><td>+2206</td><td>0</td><td>2206</td><td>+2206</td><td>2206</td><td>0</td><td>0</td></tr>
+<tr><td>ncbi.geneid</td><td>0</td><td>2206</td><td>+2206</td><td>0</td><td>2206</td><td>+2206</td><td>2206</td><td>0</td><td>0</td></tr>
+<tr><td>uniprot</td><td>0</td><td>2035</td><td>+2035</td><td>0</td><td>2035</td><td>+2035</td><td>2035</td><td>0</td><td>0</td></tr>
+<tr><td>ccds</td><td>2200</td><td>2200</td><td>+0</td><td>4296</td><td>4296</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>hprd</td><td>1184</td><td>1184</td><td>+0</td><td>1186</td><td>1186</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>ncbigene</td><td>2229</td><td>2229</td><td>+0</td><td>2229</td><td>2229</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>ncbigi</td><td>235</td><td>235</td><td>+0</td><td>1282</td><td>1282</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>omim</td><td>2129</td><td>2129</td><td>+0</td><td>2129</td><td>2129</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>refseq_name</td><td>2229</td><td>2229</td><td>+0</td><td>2229</td><td>2229</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>refseq_synonym</td><td>2073</td><td>2073</td><td>+0</td><td>7105</td><td>7105</td><td>+0</td><td>0</td><td>0</td><td>0</td></tr></tbody>
+                    </table>
+                </div>
+
+                <h3>Changed Entity Examples</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Value count</th>
+                                <th>New parameters</th>
+                                <th>Changed parameters</th>
+                                <th>Removed parameters</th>
+                            </tr>
+                        </thead>
+                        <tbody><tr><td>0</td><td></td><td>1 to 1</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>10005_AT1</td><td>ACOT8</td><td>14 to 17</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10005_AT2</td><td>ACOT8</td><td>14 to 17</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10005_AT3</td><td>ACOT8</td><td>14 to 17</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10007_AT1</td><td>GNPDA1</td><td>11 to 14</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>100137049_AT1</td><td>PLA2G4B</td><td>7 to 10</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10020_AT1</td><td>GNE</td><td>15 to 18</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10026_AT1</td><td>PIGK</td><td>7 to 10</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>100287639_AT1</td><td></td><td>1 to 1</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>100288072_AT1</td><td>SDR42E2</td><td>3 to 5</td><td>ensembl, ncbi.geneid</td><td>sbo</td><td>-</td></tr>
+<tr><td>100507855_AT1</td><td></td><td>1 to 1</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>10050_AT1</td><td>SLC17A4</td><td>8 to 11</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>100526794_AT1</td><td>NT5C1B-RDH14</td><td>4 to 6</td><td>ensembl, ncbi.geneid</td><td>sbo</td><td>-</td></tr>
+<tr><td>10057_AT1</td><td>ABCC5</td><td>13 to 16</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10057_AT2</td><td>ABCC5</td><td>13 to 16</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10058_AT1</td><td>ABCB6</td><td>15 to 18</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10060_AT1</td><td>ABCC9</td><td>11 to 14</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10087_AT1</td><td>COL4A3BP</td><td>12 to 14</td><td>ensembl, ncbi.geneid</td><td>sbo</td><td>-</td></tr>
+<tr><td>10090_AT1</td><td>UST</td><td>7 to 10</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>100_AT1</td><td>ADA</td><td>5 to 8</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10135_AT1</td><td>NAMPT</td><td>13 to 16</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10157_AT1</td><td>AASS</td><td>11 to 14</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10164_AT1</td><td>CHST4</td><td>8 to 11</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10165_AT1</td><td>SLC25A13</td><td>17 to 20</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10166_AT1</td><td>SLC25A15</td><td>10 to 13</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10170_AT1</td><td>DHRS9</td><td>15 to 18</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10201_AT1</td><td>NME6</td><td>10 to 13</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10202_AT1</td><td>DHRS2</td><td>9 to 12</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10229_AT1</td><td>COQ7</td><td>11 to 14</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10246_AT1</td><td>SLC17A2</td><td>7 to 10</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10249_AT1</td><td>GLYAT</td><td>12 to 15</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10257_AT1</td><td>ABCC4</td><td>10 to 13</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>102724197_AT1</td><td></td><td>1 to 1</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>102724560_AT1</td><td>CBSL</td><td>3 to 3</td><td>-</td><td>sbo</td><td>-</td></tr>
+<tr><td>10312_AT1</td><td>TCIRG1</td><td>23 to 26</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10312_AT2</td><td>TCIRG1</td><td>23 to 26</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10317_AT1</td><td>B3GALT5</td><td>14 to 17</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10317_AT2</td><td>B3GALT5</td><td>14 to 17</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10317_AT3</td><td>B3GALT5</td><td>14 to 17</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10317_AT4</td><td>B3GALT5</td><td>14 to 17</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10317_AT5</td><td>B3GALT5</td><td>14 to 17</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10327_AT1</td><td>AKR1A1</td><td>10 to 13</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10327_AT2</td><td>AKR1A1</td><td>10 to 13</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10331_AT1</td><td>B3GNT3</td><td>11 to 13</td><td>ensembl, ncbi.geneid</td><td>sbo</td><td>-</td></tr>
+<tr><td>10351_AT1</td><td>ABCA8</td><td>7 to 10</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>1036_AT1</td><td>CDO1</td><td>6 to 9</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10380_AT1</td><td>BPNT1</td><td>9 to 12</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10390_AT1</td><td>CEPT1</td><td>5 to 8</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10396_AT1</td><td>ATP8A1</td><td>10 to 12</td><td>ensembl, ncbi.geneid</td><td>sbo</td><td>-</td></tr>
+<tr><td>10400_AT1</td><td>PEMT</td><td>11 to 14</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10400_AT2</td><td>PEMT</td><td>11 to 14</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10400_AT3</td><td>PEMT</td><td>11 to 14</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10402_AT1</td><td>ST3GAL6</td><td>9 to 12</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>1040_AT1</td><td>CDS1</td><td>7 to 10</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10423_AT1</td><td>CDIPT</td><td>8 to 11</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10423_AT2</td><td>CDIPT</td><td>8 to 11</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10449_AT1</td><td>ACAA2</td><td>6 to 9</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10455_AT1</td><td>ECI2</td><td>12 to 15</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10476_AT1</td><td>ATP5H</td><td>7 to 10</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr>
+<tr><td>10476_AT2</td><td>ATP5H</td><td>7 to 10</td><td>ensembl, ncbi.geneid, uniprot</td><td>sbo</td><td>-</td></tr></tbody>
+                    </table>
+                </div>
+            </section>
+            
+    </main>
+</body>
+</html>
